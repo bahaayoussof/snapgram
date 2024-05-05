@@ -257,7 +257,7 @@ export async function updatePost(post: IUpdatePost) {
 			// get file url
 			const fileUrl = getFilePreview(uploadedFile.$id);
 			if (!fileUrl) {
-				deleteFile(uploadedFile.$id);
+				await deleteFile(uploadedFile.$id);
 				throw Error;
 			}
 
@@ -282,11 +282,17 @@ export async function updatePost(post: IUpdatePost) {
 		);
 
 		if (!updatedPost) {
-			await deleteFile(image.imageId);
+			if (hasFileToUpdate) {
+				await deleteFile(image.imageId);
+			}
 			throw Error;
 		}
 
-		return updatePost;
+		if (hasFileToUpdate) {
+			await deleteFile(post.imageId);
+		}
+
+		return updatedPost;
 	} catch (error) {
 		console.log(error);
 	}
