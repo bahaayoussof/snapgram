@@ -12,6 +12,12 @@ const Home = () => {
 				<div className="home-posts">
 					<h2 className="h3-bold md:h2-bold text-left w-full">Home Feed</h2>
 
+					{isErrorPost && (
+						<div className="flex-center w-full h-full">
+							<p className="text-light-3">An error occurred. Please try again later.</p>
+						</div>
+					)}
+
 					{isPostLoading && !posts ? (
 						<Loader />
 					) : (
